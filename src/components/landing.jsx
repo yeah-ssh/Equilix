@@ -12,7 +12,7 @@ const Landing = () => {
    <div className="login-container">
      <h1 className="login-title">Welcome</h1>
      <button className="login-btn" onClick={handleLogin}>
-       Go to Login
+       Go to Login..
      </button>
    </div>
  );
