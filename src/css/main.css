@@ -1,0 +1,121 @@
+/* Main container styling */
+.main-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* Hero Section Styling */
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f4f8;
+  padding: 50px;
+  margin-bottom: 50px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.text-content {
+  max-width: 500px;
+}
+
+.main-title {
+  font-size: 3rem;
+  color: #4a90e2;
+}
+
+.sub-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.cta-button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+}
+
+/* Image Content Styling */
+.image-content {
+  display: flex;
+  gap: 20px;
+}
+
+.teen-group-image, .mind-neurons-image {
+  max-width: 300px;
+  height: auto;
+  animation: slideIn 1.5s ease-in-out;
+}
+
+/* Keyframes for animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Activities Section */
+.activities-section, .games-section {
+  text-align: center;
+  margin: 40px 0;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.activities-section h2, .games-section h2 {
+  font-size: 2.5rem;
+  color: #4a90e2;
+  margin-bottom: 15px;
+}
+
+iframe {
+  margin-top: 20px;
+}
+
+.game-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.game-link:hover {
+  background-color: #357abd;
+}
+
+/* Footer Styling */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #f0f4f8;
+  margin-top: 50px;
+}
