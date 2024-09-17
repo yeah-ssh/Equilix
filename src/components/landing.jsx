@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './../css/landing.css';
-import Image from '/../images/Screenshot 2024-09-15 023509.png'; // Add the correct path to your image
+import Image from './../images/Screenshot 2024-09-15 023509.png'; // Add the correct path to your image
 
 const Landing = () => {
    const navigate = useNavigate();

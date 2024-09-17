@@ -1,121 +1,138 @@
-/* Main container styling */
-.main-container {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+/* General Styles */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  color: #333;
+  scroll-behavior: smooth;
 }
 
-/* Hero Section Styling */
+/* Fullscreen Hero Section */
 .hero-section {
+  position: relative;
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background-color: #f0f4f8;
-  padding: 50px;
-  margin-bottom: 50px;
-  animation: fadeIn 1s ease-in-out;
+  text-align: center;
+  color: white;
+  overflow: hidden;
 }
 
-.text-content {
-  max-width: 500px;
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.hero-content {
+  z-index: 1;
+  max-width: 800px;
 }
 
 .main-title {
-  font-size: 3rem;
-  color: #4a90e2;
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
 .sub-title {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 20px;
+  font-size: 20px;
+  margin-bottom: 40px;
 }
 
 .cta-buttons {
   display: flex;
-  gap: 15px;
-}
-
-.cta-button {
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.cta-button:hover {
-  transform: scale(1.05);
-}
-
-/* Image Content Styling */
-.image-content {
-  display: flex;
+  justify-content: center;
   gap: 20px;
 }
 
-.teen-group-image, .mind-neurons-image {
-  max-width: 300px;
-  height: auto;
-  animation: slideIn 1.5s ease-in-out;
+.cta-button {
+  background-color: #ff5c5c;
+  color: white;
+  padding: 15px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-/* Keyframes for animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+.cta-button:hover {
+  background-color: #e64949;
 }
 
 /* Activities Section */
-.activities-section, .games-section {
+.activities-section {
+  padding: 80px 20px;
+  background-color: #f9f9f9;
   text-align: center;
-  margin: 40px 0;
-  animation: fadeIn 1.5s ease-in-out;
 }
 
-.activities-section h2, .games-section h2 {
-  font-size: 2.5rem;
-  color: #4a90e2;
-  margin-bottom: 15px;
+.activities-section h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
-iframe {
-  margin-top: 20px;
+.activities-section p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.video-dropdown {
+  margin-bottom: 20px;
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Games Section */
+.games-section {
+  padding: 80px 20px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.games-section h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.games-section p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.game-dropdown {
+  margin-bottom: 20px;
 }
 
 .game-link {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #4a90e2;
+  background-color: #ff5c5c;
   color: white;
+  padding: 15px 30px;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
 }
 
 .game-link:hover {
-  background-color: #357abd;
+  background-color: #e64949;
 }
 
-/* Footer Styling */
+/* Footer */
 .footer {
+  background-color: #333;
+  color: white;
   text-align: center;
   padding: 20px;
-  background-color: #f0f4f8;
-  margin-top: 50px;
 }
