@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './../css/login.css';
 
@@ -8,21 +8,42 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [bubbles, setBubbles] = useState([]);
 
   const toggleMode = () => setIsSignUp(!isSignUp);
 
-  const handleLogin = () => {
+  const handleLogin = () => { 
     if (email && password) {
-      // Add validation and auth logic here
+      navigate('/main');
+    }
+  }; 
+
+  const handleSignUp = () => {
+    if (email && password && password === confirmPassword) {
       navigate('/main');
     }
   };
 
-  const handleSignUp = () => {
-    if (email && password && password === confirmPassword) {
-      // Add sign-up logic here
-      navigate('/main');
+  const createBubbles = () => {
+    const bubbleArray = [];
+    for (let i = 0; i < 30; i++) {
+      const bubble = {
+        id: i,
+        size: Math.random() * 100 + 10,
+        top: Math.random() * 100 + '%',
+        left: Math.random() * 100 + '%',
+      };
+      bubbleArray.push(bubble);
     }
+    setBubbles(bubbleArray);
+  };
+
+  useEffect(() => {
+    createBubbles(); // Create bubbles when the component loads
+  }, []);
+
+  const burstBubble = (id) => {
+    setBubbles(bubbles.filter((bubble) => bubble.id !== id));
   };
 
   return (
@@ -31,7 +52,19 @@ const Login = () => {
         <h1 className="product-title">Equilix</h1>
         <p className="welcome-text">Welcome to Equilix. Please sign in or sign up to continue.</p>
         <div className="animation-area">
-          {/* Placeholder for future animations */}
+          {bubbles.map((bubble) => (
+            <div
+              key={bubble.id}
+              className="bubble"
+              style={{
+                width: bubble.size + 'px',
+                height: bubble.size + 'px',
+                top: bubble.top,
+                left: bubble.left,
+              }}
+              onClick={() => burstBubble(bubble.id)}
+            />
+          ))}
         </div>
       </div>
       <div className="right-section">
