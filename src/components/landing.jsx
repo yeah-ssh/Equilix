@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './../css/landing.css';
-import Image from '/../images/Screenshot 2024-09-15 023509.png'; // Add the correct path to your image
+import './../css/landing.css'; // Ensure correct path to your CSS file
 
 const Landing = () => {
    const navigate = useNavigate();
@@ -12,9 +11,6 @@ const Landing = () => {
 
    return (
      <div className="landing-container">
-       <div className="image-container">
-         <img src={Image} alt="Depressed teen illustration" className="landing-image" />
-       </div>
        <div className="text-container">
          <h1 className="project-name">Equilix</h1>
          <h2 className="tagline">Overcoming the Darkness</h2>
