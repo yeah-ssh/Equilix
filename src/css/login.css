@@ -18,11 +18,11 @@ body, html {
 .left-section {
   flex: 1;
   background: linear-gradient(135deg, 
-              rgba(8, 143, 118, 0.8), 
-              rgba(7, 30, 130, 0.8), 
-              rgba(53, 245, 24, 0.8), 
-              rgba(6, 133, 156, 0.8), 
-              rgba(245, 77, 77, 0.8));
+              rgba(21,255,160), 
+              rgb(3, 240, 137), 
+              rgb(92, 228, 217), 
+              rgb(65, 235, 108), 
+              rgb(8, 207, 104));
   background-size: 300% 300%;
   animation: complexGradientFlow 10s ease infinite;
   color: #F1F1F1;
@@ -37,17 +37,20 @@ body, html {
 }
 
 .product-title {
-  font-size: 3.5rem;
+  font-size: 5rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
   margin-bottom: 20px;
-  color: rgb(204, 205, 223);
+  color: #ffffff;
   animation: fadeIn 1s ease-in-out;
 }
 
 .welcome-text {
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 2rem;
+  font-weight: 600;
   margin-bottom: 40px;
   animation: fadeIn 3s ease-in-out;
+  color:#f5f1f1
 }
 
 .animation-area {
@@ -63,7 +66,7 @@ body, html {
 /* Bubbles */
 .bubble {
   position: absolute;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 10%, rgba(255, 255, 255, 0.3) 60%, rgba(255, 255, 255, 0.05) 100%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.3) 60%, rgba(255, 255, 255, 0.05) 100%);
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 
               inset -3px -3px 8px rgba(0, 0, 0, 0.1), 
               inset 3px 3px 8px rgba(255, 255, 255, 0.5);
@@ -114,7 +117,7 @@ body, html {
 
 .right-section {
   flex: 2;
-  background-color: #dbdbdb;
+  background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,14 +136,14 @@ input {
   width: 100%;
   padding: 15px;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 2px solid #04c59d;
   border-radius: 4px;
 }
 
 .auth-btn {
   width: 100%;
   padding: 15px;
-  background-color: #4CAF50;
+  background-color: #04c59d;
   color: white;
   border: none;
   border-radius: 4px;
@@ -148,7 +151,7 @@ input {
 }
 
 .auth-btn:hover {
-  background-color: #45a049;
+  background-color: #1deb46a4;
 }
 
 .toggle-mode {
@@ -163,4 +166,36 @@ input {
 
 .toggle-mode span:hover {
   text-decoration: underline;
+}
+
+.tile {
+  background-color: rgba(255, 255, 255, 0.1); /* More transparent background for glass effect */
+  backdrop-filter: blur(15px); /* Stronger blur effect */
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Light shadow for depth */
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Thin border to enhance glass effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Added background-color transition */
+}
+
+.tile:hover {
+  transform: translateY(-5px); /* Slight hover effect */
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.2); /* Slightly change background color on hover for a dynamic effect */
+}
+
+.auth-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.header-line {
+  border: none; /* Removes default border styles */
+  height: 2px; /* Line thickness */
+  background-color: #ccc; /* Line color */
+  margin: 20px; /* Spacing around the line */
 }

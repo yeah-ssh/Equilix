@@ -12,11 +12,11 @@ const Login = () => {
 
   const toggleMode = () => setIsSignUp(!isSignUp);
 
-  const handleLogin = () => { 
+  const handleLogin = () => {
     if (email && password) {
       navigate('/main');
     }
-  }; 
+  };
 
   const handleSignUp = () => {
     if (email && password && password === confirmPassword) {
@@ -68,44 +68,48 @@ const Login = () => {
         </div>
       </div>
       <div className="right-section">
-        <form>
-          <input 
-            type="email" 
-            placeholder="Email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-          />
-          <input 
-            type="password" 
-            placeholder="Password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
-          {isSignUp && (
+        <div className="tile">
+          <h2 className="auth-header">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
+           <hr className="header-line" />
+          <form>
             <input 
-              type="password" 
-              placeholder="Confirm Password" 
-              value={confirmPassword} 
-              onChange={(e) => setConfirmPassword(e.target.value)} 
+              type="email" 
+              placeholder="Email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
               required 
             />
-          )}
-          <button 
-            type="button" 
-            onClick={isSignUp ? handleSignUp : handleLogin}
-            className="auth-btn"
-          >
-            {isSignUp ? 'Sign Up' : 'Sign In'}
-          </button>
-          <p className="toggle-mode">
-            {isSignUp ? 'Already have an account?' : 'Don’t have an account?'}
-            <span onClick={toggleMode}>
-              {isSignUp ? ' Sign In' : ' Sign Up'}
-            </span>
-          </p>
-        </form>
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+            />
+            {isSignUp && (
+              <input 
+                type="password" 
+                placeholder="Confirm Password" 
+                value={confirmPassword} 
+                onChange={(e) => setConfirmPassword(e.target.value)} 
+                required 
+              />
+            )}
+            <button 
+              type="button" 
+              onClick={isSignUp ? handleSignUp : handleLogin}
+              className="auth-btn"
+            >
+              {isSignUp ? 'Sign Up' : 'Sign In'}
+            </button>
+            <p className="toggle-mode">
+              {isSignUp ? 'Already have an account?' : 'Don’t have an account?'}
+              <span onClick={toggleMode}>
+                {isSignUp ? ' Sign In' : ' Sign Up'}
+              </span>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
