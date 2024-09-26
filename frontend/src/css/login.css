@@ -1,0 +1,201 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+}
+
+.login-container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-section {
+  flex: 1;
+  background: linear-gradient(135deg, 
+              rgba(21,255,160), 
+              rgb(3, 240, 137), 
+              rgb(92, 228, 217), 
+              rgb(65, 235, 108), 
+              rgb(8, 207, 104));
+  background-size: 300% 300%;
+  animation: complexGradientFlow 10s ease infinite;
+  color: #F1F1F1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden; /* To prevent bubbles from overflowing outside */
+}
+
+.product-title {
+  font-size: 5rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  margin-bottom: 20px;
+  color: #ffffff;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.welcome-text {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 40px;
+  animation: fadeIn 3s ease-in-out;
+  color:#f5f1f1
+}
+
+.animation-area {
+  width: 100%;
+  height: 100%; /* Make sure bubbles cover the entire left section */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Ensure bubbles float over the content */
+  overflow: hidden; /* Hide overflow of floating bubbles */
+}
+
+/* Bubbles */
+.bubble {
+  position: absolute;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.3) 60%, rgba(255, 255, 255, 0.05) 100%);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 
+              inset -3px -3px 8px rgba(0, 0, 0, 0.1), 
+              inset 3px 3px 8px rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: float 15s infinite ease-in-out;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bubble:hover {
+  background-color: rgba(255, 255, 255, 0.425); /* Brighter on hover */
+  transform: scale(1.2); /* Slightly increase size on hover */
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2), 
+              inset -5px -5px 10px rgba(0, 0, 0, 0.2), 
+              inset 5px 5px 12px rgba(255, 255, 255, 0.7);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-500px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Advanced Gradient Animation */
+@keyframes complexGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.right-section {
+  flex: 2;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  position: relative;
+  z-index: 2; /* Ensure the form appears on top */
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 2px solid #04c59d;
+  border-radius: 4px;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: #04c59d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-btn:hover {
+  background-color: #1deb46a4;
+}
+
+.toggle-mode {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.toggle-mode span {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.toggle-mode span:hover {
+  text-decoration: underline;
+}
+
+.tile {
+  background-color: rgba(255, 255, 255, 0.1); /* More transparent background for glass effect */
+  backdrop-filter: blur(15px); /* Stronger blur effect */
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Light shadow for depth */
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Thin border to enhance glass effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Added background-color transition */
+}
+
+.tile:hover {
+  transform: translateY(-5px); /* Slight hover effect */
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.2); /* Slightly change background color on hover for a dynamic effect */
+}
+
+.auth-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.header-line {
+  border: none; /* Removes default border styles */
+  height: 2px; /* Line thickness */
+  background-color: #ccc; /* Line color */
+  margin: 20px; /* Spacing around the line */
+}
