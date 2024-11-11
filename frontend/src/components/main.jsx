@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import SkipNextOutlinedIcon from '@mui/icons-material/SkipNextOutlined';
 import SkipPreviousOutlinedIcon from '@mui/icons-material/SkipPreviousOutlined';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import axios from 'axios';
 
-const questions = [ 
+const questions = [   
   { id: 1, text: 'I had trouble calming down' },
   { id: 2, text: 'I noticed my mouth felt dry' },
   { id: 3, text: 'I struggled to feel happy or enjoy things' },
@@ -44,35 +45,30 @@ const Main = () => {
   const [startTime, setStartTime] = useState(Date.now());
   const navigate = useNavigate();
 
-  // Handle opening and closing the modal
   const openModal = () => {
     setIsModalOpen(true);
   };
   
   const closeModal = () => setIsModalOpen(false);
 
-  // Handle response change and calculate time taken
   const handleResponseChange = (questionId, value) => {
-    const timeTaken = Date.now() - startTime; // Calculate time taken in milliseconds
+    const timeTaken = Date.now() - startTime;
     setResponses(prevResponses => ({
       ...prevResponses,
-      [questionId]: { answer: value, time: timeTaken } // Store answer and time taken
+      [questionId]: { answer: value, time: timeTaken }
     }));
-    setStartTime(Date.now()); // Reset start time for the next question
+    setStartTime(Date.now());
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      setIsCompleted(true);
+    }
   };
 
-  // Handle Next and Previous button logic
   const handleNext = () => {
-    const currentQuestion = questions[currentQuestionIndex];
-    if (responses[currentQuestion.id]) {
-      // Check if it's the last question
-      if (currentQuestionIndex + 1 >= questions.length) {
-        setIsCompleted(true);
-      } else {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-      }
-    } else {
-      alert('Please answer the question before proceeding.');
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
@@ -82,14 +78,28 @@ const Main = () => {
     }
   };
 
-  // Get the current question
   const currentQuestion = questions[currentQuestionIndex];
 
-  const handleReportRedirect = () => {
-    navigate('/report', { state: { responses } });  // Redirect to the report page
+  const handleReportRedirect = async () => {
+    const depressionQuestions = [3, 5, 10, 13, 16, 17, 21];
+    const anxietyQuestions = [2, 4, 7, 9, 15, 19, 20];
+    const stressQuestions = [1, 6, 8, 11, 12, 14, 18];
+    
+    const formattedResponses = {
+      depression: depressionQuestions.map(id => responses[id]?.answer || 0),
+      anxiety: anxietyQuestions.map(id => responses[id]?.answer || 0),
+      stress: stressQuestions.map(id => responses[id]?.answer || 0)
+    };
+    
+    try {
+      const result = await axios.post('http://localhost:5000/predict', { responses: formattedResponses });
+      const { depression, stress, anxiety } = result.data;
+      navigate('/report', { state: { depression, stress, anxiety, responses } });
+    } catch (error) {
+      console.error('Error fetching predictions:', error);
+    }
   };
 
-  // Calculate progress percentage
   const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
@@ -111,7 +121,6 @@ const Main = () => {
         </div>
       </div>
 
-      {/* Modal Section */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal">
@@ -121,26 +130,19 @@ const Main = () => {
               {isCompleted ? (
                 <div className="completion-message">
                   <h3>Thank you for answering all the questions!</h3>
-                  <p>
-                    Now go to the <strong>Report</strong> section to view your results.
-                  </p>
+                  <p>Now go to the <strong>Report</strong> section to view your results.</p>
                   <button className="cta-button" onClick={handleReportRedirect}>Go to Report</button>
                 </div>
               ) : (
                 <div className="question-block visible">
-                  {/* Progress Bar */}
-                  <div className="progress-bar-container ">
-                    <div 
-                      className="progress-bar" 
-                      style={{ width: `${progressPercentage}%` }} 
-                    />
+                  <div className="progress-bar-container">
+                    <div className="progress-bar" style={{ width: `${progressPercentage}%` }} />
                   </div>
                   <p id="question">{currentQuestion.text}</p>
                   <div className="radio-group">
                     {options.map((option) => (
                       <label key={option.value} className="radio-label">
                         <input
-                          id="options" 
                           type="radio" 
                           name={`question-${currentQuestion.id}`}
                           value={option.value}
@@ -152,7 +154,6 @@ const Main = () => {
                       </label>
                     ))}
                   </div>
-                
                   <div className="modal-navigation">
                     {currentQuestionIndex > 0 && (
                       <button onClick={handlePrevious} className="nav-button"><SkipPreviousOutlinedIcon/></button>
@@ -166,12 +167,11 @@ const Main = () => {
         </div>
       )}
 
-      {/* Footer */}
       <footer className="footer">
         <p>© 2024 Equilix. All rights reserved. | Privacy Policy | Terms of Service</p>
       </footer>
     </div>
-  );
+  ); 
 };
 
-export default Main;
+export default Main;   

@@ -1,0 +1,57 @@
+.whack-a-mole {
+    text-align:center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    margin: 20px auto;
+    margin-left: 240px;
+  }
+  
+  .hole {
+    width: 100px;
+    height: 100px;
+    background-color: #a0522d;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .mole {
+    background-color: #556b2f;
+  }
+  
+  .hole.mole::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: #32cd32;
+    border-radius: 50%;
+    top: 20px;
+    left: 20px;
+  }
+  
+  .start-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .start-button:hover {
+    background-color: #45a049;
+  }
+  
+  .game-over {
+    font-size: 18px;
+    color: red;
+    margin-top: 20px;
+  }
+  
