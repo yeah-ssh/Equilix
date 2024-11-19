@@ -39,7 +39,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    createBubbles(); // Create bubbles when the component loads
+    createBubbles(); 
   }, []);
 
   const burstBubble = (id) => {

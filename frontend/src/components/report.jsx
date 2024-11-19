@@ -15,6 +15,13 @@ import {
 import './../css/report.css';
 import MemoryGame from './memorygame';
 import WhackAMole from './whackamole';
+import AIComponent from './aicomponent';
+import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
+import HourglassBottomOutlinedIcon from '@mui/icons-material/HourglassBottomOutlined';
+import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
+import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import MazeGame from './mazegame';
 
 ChartJS.register(
   CategoryScale,
@@ -122,12 +129,14 @@ const Report = () => {
         </video>
     <div className="report-container">
       
-      <header className="navbar">
-        <button className="toggle-button" onClick={() => setActiveSection('results')}>Results</button>
-        <button className="toggle-button" onClick={() => setActiveSection('timeData')}>Time Data</button>
-        <button className="toggle-button" onClick={() => setActiveSection('games')}>Games</button>
-        <button className="toggle-button" onClick={generatePDF}>Download PDF</button>
-      </header>
+      <div className="button-container">
+        <button className="toggle-button" onClick={() => setActiveSection('results')}><SummarizeOutlinedIcon/>&ensp;Results</button>
+        <button className="toggle-button" onClick={() => setActiveSection('timeData')}><HourglassBottomOutlinedIcon/>Time Data</button>
+        <button className="toggle-button" onClick={() => setActiveSection('games')}><SmartToyOutlinedIcon/>&ensp;Games</button>
+        <button className="toggle-button" onClick={() => setActiveSection('gpt')}><PsychologyOutlinedIcon/>&ensp;Talk to AI</button>
+        <button className="toggle-button" onClick={generatePDF}><FileDownloadOutlinedIcon/>Download PDF</button>
+       
+      </div>
 
       <div className="content">
         {activeSection === 'results' && (
@@ -173,12 +182,22 @@ const Report = () => {
             <div className="game-buttons">
               <button className={`game-button ${activeGame === 'memory' ? 'active' : ''}`} onClick={() => setActiveGame('memory')}>Memory Cards</button>
               <button className={`game-button ${activeGame === 'whack' ? 'active' : ''}`} onClick={() => setActiveGame('whack')}>Whack A Mole</button>
+              <button className={`game-button ${activeGame === 'maze' ? 'active' : ''}`} onClick={() => setActiveGame('maze')}>Cat & Mouse</button>
+
             </div>
             <div className="game-area">
               {activeGame === 'memory' && <MemoryGame />}
               {activeGame === 'whack' && <WhackAMole />}
+              {activeGame==='maze'&& <MazeGame/>}
             </div>
           </div>
+        )}
+
+        {activeSection === 'gpt' && (
+        <div classname="gpt-area">
+          <AIComponent/>
+          </div>
+          
         )}
       </div>
 

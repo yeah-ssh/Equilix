@@ -1,0 +1,80 @@
+/* General styles */
+.aicomponent-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.aicomponent-container h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Input area */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.input-container textarea {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  min-height: 120px;
+  width: 100%;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.input-container button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input-container button:disabled {
+  background-color: #b0e57c;
+}
+
+.input-container button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+/* Response area */
+.response-container {
+  margin-top: 30px;
+}
+
+.response-container .response-text {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  min-height: 50px;
+}
+
+.loading-text {
+  font-size: 18px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}

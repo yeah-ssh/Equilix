@@ -1,0 +1,62 @@
+.maze-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .play-button {
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .play-button:hover {
+    background-color: #45a049;
+  }
+  
+  .maze-grid {
+    display: grid;
+    grid-template-columns: repeat(15, 30px);
+    grid-gap: 2px;
+    margin-top: 10px;
+  }
+  
+  .maze-cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .wall {
+    background-color: black;
+  }
+  
+  .path {
+    background-color: white;
+  }
+  
+  .player {
+    background-color: lightblue;
+  }
+  
+  .goal {
+    background-color: lightgreen;
+  }
+  
+  .highlighted-path {
+    background-color: yellow;
+  }
+  

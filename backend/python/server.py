@@ -7,13 +7,13 @@ app = Flask(__name__)
 CORS(app)
 
 # Load models
-with open('knn_depression.pkl', 'rb') as file:
+with open('svm_model.pkl', 'rb') as file:
     depression_model = pickle.load(file)
 
-with open('knn_stress.pkl', 'rb') as file:
+with open('svm_model_st.pkl', 'rb') as file:
     stress_model = pickle.load(file)
 
-with open('knn_anxiety.pkl', 'rb') as file:
+with open('svm_model_ax.pkl', 'rb') as file:
     anxiety_model = pickle.load(file)
 
 @app.route('/predict', methods=['POST'])

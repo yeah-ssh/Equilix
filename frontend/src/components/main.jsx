@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import SkipNextOutlinedIcon from '@mui/icons-material/SkipNextOutlined';
 import SkipPreviousOutlinedIcon from '@mui/icons-material/SkipPreviousOutlined';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import PermContactCalendarOutlinedIcon from '@mui/icons-material/PermContactCalendarOutlined';
 import axios from 'axios';
 
 const questions = [   
@@ -115,8 +117,8 @@ const Main = () => {
             Equilix helps teens detect early signs of depression and provides the resources they need for recovery.
           </p>
           <div className="cta-buttons">
-            <button className="cta-button" onClick={openModal}>Give A Test</button>
-            <button className="cta-button" onClick={handleReportRedirect}>Report</button>
+            <button className="cta-button" onClick={openModal}><PermContactCalendarOutlinedIcon/>&ensp;Give A Test</button>
+            <button className="cta-button" onClick={handleReportRedirect}><AssessmentOutlinedIcon/>&ensp;Report</button>
           </div>
         </div>
       </div>
@@ -126,7 +128,7 @@ const Main = () => {
           <div className="modal">
             <div className="modal-content">
               <button onClick={closeModal} className="close-button"><CancelPresentationIcon/></button>
-              <h2 id="heading">Answer the Question</h2>
+              <h2 id="heading">Answer the Questions</h2>
               {isCompleted ? (
                 <div className="completion-message">
                   <h3>Thank you for answering all the questions!</h3>

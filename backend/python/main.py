@@ -195,19 +195,10 @@ unique_labels, label_counts = np.unique(dp_Y_Test, return_counts=True)
 # Define the desired label arrangement
 desired_labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
 
-print("Test data distribution")
-# Print the label counts
-for label, count in zip(unique_labels, label_counts):
-    print(f"Label: {label}, Count: {count}")
 # Calculate the count of each unique label
 unique_labels, label_counts = np.unique(dp_Y_Train, return_counts=True)
 # Define the desired label arrangement
 desired_labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
-
-print("Training data distribution")
-# Print the label counts
-for label, count in zip(unique_labels, label_counts):
-    print(f"Label: {label}, Count: {count}")
 
 
 #Seperate the data and labels
@@ -227,21 +218,10 @@ unique_labels, label_counts = np.unique(st_Y_Test, return_counts=True)
 # Define the desired label arrangement
 desired_labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
 
-print("Test data distribution")
-# Print the label counts
-for label, count in zip(unique_labels, label_counts):
-    print(f"Label: {label}, Count: {count}")
-
 # Calculate the count of each unique label
 unique_labels, label_counts = np.unique(st_Y_Train, return_counts=True)
 # Define the desired label arrangement
 desired_labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
-
-print("Training data distribution")
-# Print the label counts
-for label, count in zip(unique_labels, label_counts):
-    print(f"Label: {label}, Count: {count}")
-
 
 #Seperate the data and labels
 anxiety_labels = final_anxiety_dataset["Label"]
@@ -261,20 +241,6 @@ ax_X_Train, ax_X_Test, ax_Y_Train, ax_Y_Test = train_test_split(anxiety_X, encod
 unique_labels, label_counts = np.unique(ax_Y_Test, return_counts=True)
 # Define the desired label arrangement
 desired_labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
-
-print("Test data distribution")
-# Print the label counts
-for label, count in zip(unique_labels, label_counts):
-    print(f"Label: {label}, Count: {count}")
-# Calculate the count of each unique label
-unique_labels, label_counts = np.unique(ax_Y_Train, return_counts=True)
-# Define the desired label arrangement
-desired_labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
-
-print("Training data distribution")
-# Print the label counts
-for label, count in zip(unique_labels, label_counts):
- print(f"Label: {label}, Count: {count}") 
 
 
 
@@ -308,6 +274,7 @@ ax.yaxis.set_ticklabels(labels, fontsize = 10)
 plt.yticks(rotation=0)
 
 plt.title('Confusion Matrix', fontsize=15)
+
 #Classification report
 print(classification_report(dp_Y_Test, dp_predictions, target_names = ['Extremely Severe(0)', 'Severe(1)', 'Moderate(2)', 'Mild(3)', 'Normal(4)']))
 
@@ -316,6 +283,10 @@ precision = precision_score(dp_Y_Test, dp_predictions, average='macro')
 recall = recall_score(dp_Y_Test, dp_predictions, average='macro')
 f1 = f1_score(dp_Y_Test, dp_predictions, average='macro')
 
+print("Accuracy of knn depression: %.f" %(accuracy*100))
+print("Precision: %.f" %(precision*100))
+print("Recall: %.f" %(recall*100))
+print("F1-score: %.f" %(f1*100))
 
 with open('knn_depression.pkl', 'wb') as file:
     pickle.dump(k_model, file)
@@ -358,9 +329,16 @@ precision = precision_score(st_Y_Test, st_predictions, average='macro')
 recall = recall_score(st_Y_Test, st_predictions, average='macro')
 f1 = f1_score(st_Y_Test, st_predictions, average='macro')
 
+print("Accuracy of knn stress: %.f" %(accuracy*100))
+print("Precision: %.f" %(precision*100))
+print("Recall: %.f" %(recall*100))
+print("F1-score: %.f" %(f1*100))
+
 
 with open('knn_stress.pkl', 'wb') as file:
     pickle.dump(k_model_st, file)
+
+
 
 
 
@@ -400,6 +378,177 @@ precision = precision_score(ax_Y_Test, ax_predictions, average='macro')
 recall = recall_score(ax_Y_Test, ax_predictions, average='macro')
 f1 = f1_score(ax_Y_Test, ax_predictions, average='macro')
 
+print("Accuracy of knn anxiety: %.f" %(accuracy*100))
+print("Precision: %.f" %(precision*100))
+print("Recall: %.f" %(recall*100))
+print("F1-score: %.f" %(f1*100))
+
 
 with open('knn_anxiety.pkl', 'wb') as file:
     pickle.dump(k_model_ax, file)
+
+
+
+
+
+
+
+#SVVVVVVMMMMMMMMMM
+
+svm_model = SVC(C = 10, kernel = 'rbf', gamma= 0.2, random_state=24)
+svm_model.fit(dp_X_Train, dp_Y_Train)
+dp_predictions = svm_model.predict(dp_X_Test)
+
+#Confusion matrix
+cm = confusion_matrix(dp_Y_Test, dp_predictions)
+print(cm)
+
+import seaborn as sns
+
+#Setting the labels
+labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
+
+#Plot the Confusion matrix graph
+fig= plt.figure(figsize=(8, 5))
+ax = plt.subplot()
+sns.heatmap(cm, annot=True, ax = ax, fmt='g')
+ax.set_xlabel('Predicted Labels', fontsize=10)
+ax.xaxis.set_label_position('bottom')
+plt.xticks(rotation=90)
+ax.xaxis.set_ticklabels(labels, fontsize = 5)
+ax.xaxis.tick_bottom()
+
+ax.set_ylabel('True Labels', fontsize=10)
+ax.yaxis.set_ticklabels(labels, fontsize = 10)
+plt.yticks(rotation=0)
+
+plt.title('Confusion Matrix', fontsize=15)
+
+plt.savefig('SVM Depression.png')
+plt.show()
+
+print(classification_report(dp_Y_Test, dp_predictions, target_names = ['Extremely Severe(0)', 'Severe(1)', 'Moderate(2)', 'Mild(3)', 'Normal(4)']))
+# Evaluate the model using accuracy, precision, recall, and F1-score
+accuracy_svm = accuracy_score(dp_Y_Test, dp_predictions)
+precision_svm = precision_score(dp_Y_Test, dp_predictions, average='macro')
+recall_svm = recall_score(dp_Y_Test, dp_predictions, average='macro')
+f1_svm = f1_score(dp_Y_Test, dp_predictions, average='macro')
+
+print("Accuracy of svm depression: %.f" %(accuracy_svm*100))
+print("Precision: %.f" %(precision_svm*100))
+print("Recall: %.f" %(recall_svm*100))
+print("F1-score: %.f" %(f1_svm*100))
+
+with open('svm_model.pkl', 'wb') as file:
+    pickle.dump(svm_model, file)
+
+
+
+
+
+
+
+svm_model_st = SVC(C = 10, kernel = 'rbf', gamma= 0.2, random_state=24)
+svm_model_st.fit(st_X_Train, st_Y_Train)
+st_predictions = svm_model_st.predict(st_X_Test)
+
+#Confusion matrix
+cm = confusion_matrix(st_Y_Test, st_predictions)
+print(cm)
+
+import seaborn as sns
+
+#Setting the labels
+labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
+
+#Plot the Confusion matrix graph
+fig= plt.figure(figsize=(8, 5))
+ax = plt.subplot()
+sns.heatmap(cm, annot=True, ax = ax, fmt='g')
+ax.set_xlabel('Predicted Labels', fontsize=10)
+ax.xaxis.set_label_position('bottom')
+plt.xticks(rotation=90)
+ax.xaxis.set_ticklabels(labels, fontsize = 5)
+ax.xaxis.tick_bottom()
+
+ax.set_ylabel('True Labels', fontsize=10)
+ax.yaxis.set_ticklabels(labels, fontsize = 10)
+plt.yticks(rotation=0)
+
+plt.title('Confusion Matrix', fontsize=15)
+
+plt.savefig('SVM Stress.png')
+plt.show()
+
+print(classification_report(st_Y_Test, st_predictions, target_names = ['Extremely Severe(0)', 'Severe(1)', 'Moderate(2)', 'Mild(3)', 'Normal(4)']))
+accuracy = accuracy_score(st_Y_Test, st_predictions)
+precision = precision_score(st_Y_Test, st_predictions, average='macro')
+recall = recall_score(st_Y_Test, st_predictions, average='macro')
+f1 = f1_score(st_Y_Test, st_predictions, average='macro')
+
+
+# Print the evaluation metrics
+print("Accuracy of svm stress: %.f" %(accuracy*100))
+print("Precision: %.f" %(precision*100))
+print("Recall: %.f" %(recall*100))
+print("F1-score: %.f" %(f1*100))
+
+with open('svm_model_st.pkl', 'wb') as file:
+    pickle.dump(svm_model_st, file)
+
+
+svm_model_ax = SVC(C = 10, kernel = 'rbf', gamma= 0.2, random_state=24)
+svm_model_ax.fit(ax_X_Train, ax_Y_Train)
+ax_predictions = svm_model_ax.predict(ax_X_Test)
+#Confusion matrix
+cm = confusion_matrix(ax_Y_Test, ax_predictions)
+print(cm)
+
+import seaborn as sns
+
+#Setting the labels
+labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
+
+#Plot the Confusion matrix graph
+fig= plt.figure(figsize=(8, 5))
+ax = plt.subplot()
+sns.heatmap(cm, annot=True, ax = ax, fmt='g')
+ax.set_xlabel('Predicted Labels', fontsize=10)
+ax.xaxis.set_label_position('bottom')
+plt.xticks(rotation=90)
+ax.xaxis.set_ticklabels(labels, fontsize = 5)
+ax.xaxis.tick_bottom()
+
+ax.set_ylabel('True Labels', fontsize=10)
+ax.yaxis.set_ticklabels(labels, fontsize = 10)
+plt.yticks(rotation=0)
+
+plt.title('Confusion Matrix', fontsize=15)
+
+plt.savefig('SVM Anxiety.png')
+plt.show()
+
+#Classification report
+print(classification_report(ax_Y_Test, ax_predictions, target_names = ['Extremely Severe(0)', 'Severe(1)', 'Moderate(2)', 'Mild(3)', 'Normal(4)']))
+
+# Evaluate the model using accuracy, precision, recall, and F1-score
+accuracy = accuracy_score(ax_Y_Test, ax_predictions)
+precision = precision_score(ax_Y_Test, ax_predictions, average='macro')
+recall = recall_score(ax_Y_Test, ax_predictions, average='macro')
+f1 = f1_score(ax_Y_Test, ax_predictions, average='macro')
+
+
+# Print the evaluation metrics
+print("Accuracy of svm anxiety: %.f" %(accuracy*100))
+print("Precision: %.f" %(precision*100))
+print("Recall: %.f" %(recall*100))
+print("F1-score: %.f" %(f1*100))
+
+with open('svm_model_ax.pkl', 'wb') as file:
+    pickle.dump(svm_model_ax, file)
+
+
+
+
+
+
