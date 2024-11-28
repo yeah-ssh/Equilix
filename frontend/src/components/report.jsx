@@ -100,25 +100,34 @@ const Report = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text('Report', 20, 10);
-
-    // Add Severity Levels
+  
+    
     doc.setFontSize(12);
-    doc.text(`Depression Level: ${depression}`, 20, 20);
-    doc.text(`Anxiety Level: ${anxiety}`, 20, 30);
-    doc.text(`Stress Level: ${stress}`, 20, 40);
-
-    // Add Time Data for each question
+    let yOffset = 20;
+    if (location.state?.email) {
+      doc.text(`Email: ${location.state.email}`, 20, yOffset);
+      yOffset += 10;
+    }
+  
+    
+    doc.text(`Depression Level: ${depression}`, 20, yOffset);
+    yOffset += 10; 
+    doc.text(`Anxiety Level: ${anxiety}`, 20, yOffset);
+    yOffset += 10; 
+    doc.text(`Stress Level: ${stress}`, 20, yOffset);
+  
+    
     doc.autoTable({
-      startY: 50,
+      startY: yOffset + 10, 
       head: [['Question', 'Response Time (seconds)', 'Question Text']],
       body: Object.entries(responses).map(([questionId, response]) => {
         const questionText = questions.find(q => q.id === parseInt(questionId, 10))?.text || '';
         return [`Question ${questionId}`, (response.time / 1000).toFixed(2), questionText];
       }),
     });
-
-    // Download PDF
-    doc.save('report.pdf');
+  
+    
+    doc.save('your_report.pdf');
   };
 
   return (

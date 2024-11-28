@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./../css/mazegame.css";
 
 const MazeGame = () => {
-  const gridSize = 15; // Maze size (15x15 grid)
+  const gridSize = 15; 
   const [maze, setMaze] = useState([]);
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
   const [goalPosition, setGoalPosition] = useState({ x: gridSize - 1, y: gridSize - 1 });
@@ -18,7 +18,7 @@ const MazeGame = () => {
   const generateMaze = () => {
     const newMaze = Array(gridSize)
       .fill(null)
-      .map(() => Array(gridSize).fill(1)); // Start with all walls (1 for wall, 0 for path)
+      .map(() => Array(gridSize).fill(1)); 
 
     const carvePath = (x, y) => {
       newMaze[x][y] = 0;

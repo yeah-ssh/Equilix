@@ -20,7 +20,7 @@ with open('svm_model_ax.pkl', 'rb') as file:
 def predict():
     data = request.json['responses']
     
-    # Assume data is already formatted in arrays for each category
+    
     depression_responses = data['depression']
     stress_responses = data['stress']
     anxiety_responses = data['anxiety']

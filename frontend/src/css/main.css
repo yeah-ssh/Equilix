@@ -1,4 +1,6 @@
 /* General Styles */
+
+
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -41,8 +43,13 @@ body {
 }
 
 .sub-title {
+  font-family: cursive;
   font-size: 30px;
   margin-bottom: 60px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .cta-buttons {
@@ -250,8 +257,9 @@ body {
 /* Close Button */
 .close-button {
   background-color: #f44336;
-  color: white;
+  color: #d32f2f;
   font-size: 18px;
+  font-weight: 600;
   padding: 10px 20px;
   border-radius: 50px;
   border: none;
@@ -260,7 +268,7 @@ body {
 }
 
 .close-button:hover {
-  background-color: #d32f2f;
+  background-color: #f28f8f;
 }
 
 
@@ -324,4 +332,27 @@ body {
 
 .cta-button:hover {
   background-color: #45a049;
+}
+
+.main-container{
+  position: relative;
+}
+
+.header{
+  position: absolute;
+  top:0;
+  left:0;
+  display: flex;
+  justify-content: space-between;
+  width:100%;
+}
+
+.logout-button{
+  background-color: #4caf50;
+  color: white;
+  margin:1% 1%;
+  padding:1% 2%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

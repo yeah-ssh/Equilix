@@ -9,18 +9,74 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [bubbles, setBubbles] = useState([]);
+  const [error, setError] = useState('');
 
-  const toggleMode = () => setIsSignUp(!isSignUp);
+  useEffect(() => {
+  
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/main'); 
+    }
+  }, [navigate]);
 
-  const handleLogin = () => {
+  const toggleMode = () => {
+    setError('');
+    setIsSignUp(!isSignUp);
+  };
+
+  const handleLogin = async () => {
+    setError('');
     if (email && password) {
-      navigate('/main');
+      try {
+        const response = await fetch('http://localhost:3001/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        console.log(data);
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('email', data.user.email);
+          navigate('/main');
+        } else {
+          setError(data.message || 'Login failed');
+        }
+      } catch (err) {
+        setError('Something went wrong. Please try again later.');
+      }
+    } else {
+      setError('Please enter both email and password');
     }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
+    setError('');
     if (email && password && password === confirmPassword) {
-      navigate('/main');
+      try {
+        const response = await fetch('http://localhost:3001/api/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        console.log(data)
+        if (response.ok) {
+          navigate('/login'); 
+        } else {
+          setError(data.message || 'Sign-up failed');
+        }
+      } catch (err) {
+        setError('Something went wrong. Please try again later.');
+      }
+    } else if (password !== confirmPassword) {
+      setError('Passwords do not match');
+    } else {
+      setError('Please fill all fields');
     }
   };
 
@@ -39,7 +95,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    createBubbles(); 
+    createBubbles();
   }, []);
 
   const burstBubble = (id) => {
@@ -70,33 +126,34 @@ const Login = () => {
       <div className="right-section">
         <div className="tile">
           <h2 className="auth-header">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
-           <hr className="header-line" />
+          <hr className="header-line" />
+          {error && <p className="error-message">{error}</p>}
           <form>
-            <input 
-              type="email" 
-              placeholder="Email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
-            <input 
-              type="password" 
-              placeholder="Password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
             {isSignUp && (
-              <input 
-                type="password" 
-                placeholder="Confirm Password" 
-                value={confirmPassword} 
-                onChange={(e) => setConfirmPassword(e.target.value)} 
-                required 
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
               />
             )}
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={isSignUp ? handleSignUp : handleLogin}
               className="auth-btn"
             >

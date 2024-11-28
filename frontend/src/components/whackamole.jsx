@@ -12,13 +12,13 @@ const WhackAMole = () => {
     let countdownInterval;
 
     if (isGameActive && timer > 0) {
-      // Move the mole every 800ms
+      
       moleInterval = setInterval(() => {
         const newPosition = Math.floor(Math.random() * 9);
         setMolePosition(newPosition);
       }, 800);
 
-      // Countdown timer
+      
       countdownInterval = setInterval(() => {
         setTimer((prevTime) => prevTime - 1);
       }, 1000);

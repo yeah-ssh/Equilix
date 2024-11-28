@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/memorygame.css';
 
 const MemoryGame = () => {
-  // Updated items list to 8 unique items for a 4x4 layout
+  
   const items = ['🍎', '🍌', '🍇', '🍒', '🍍', '🥝', '🍉', '🍑'];
   const [cards, setCards] = useState([]);
   const [flippedCards, setFlippedCards] = useState([]);
@@ -10,24 +10,24 @@ const MemoryGame = () => {
   const [isGameComplete, setIsGameComplete] = useState(false);
 
   useEffect(() => {
-    // Doubling the items array to create pairs, then shuffling
+    
     setCards(shuffle([...items, ...items]));
   }, []);
 
   useEffect(() => {
-    // Check if all cards are matched
+    
     if (matchedCards.length === cards.length && cards.length > 0) {
       setTimeout(() => setIsGameComplete(true), 500);
     }
   }, [matchedCards, cards]);
 
-  // Shuffle function to randomize cards
+  
   const shuffle = (array) => {
     return array.sort(() => Math.random() - 0.5);
   };
 
   const handleCardClick = (index) => {
-    // Ignore click if two cards are flipped, or card is already matched/flipped
+    
     if (
       flippedCards.length === 2 ||
       matchedCards.includes(index) ||

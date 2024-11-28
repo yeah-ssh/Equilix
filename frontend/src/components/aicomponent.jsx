@@ -7,23 +7,23 @@ const AIComponent = () => {
   const [answer, setAnswer] = useState('');
   const [error, setError] = useState('');
 
-  // Allowed keywords for question validation
-  const allowedKeywords = ['depression', 'stress', 'anxiety', 'mental health', 'well-being'];
+  
+  const allowedKeywords = ['depression', 'stress', 'anxiety', 'mental health', 'well-being','depressed','stressed','low','health','mind','suicide','exercise',];
 
-  // The generateAnswer function with validation added
+  
   const generateAnswer = async () => {
-    // Check if the question contains at least one allowed keyword
+    
     const isValidQuestion = allowedKeywords.some(keyword => 
       question.toLowerCase().includes(keyword)
     );
 
     if (!isValidQuestion) {
-      setError(`Please ask questions related to: ${allowedKeywords.join(', ')}`);
-      setAnswer(''); // Clear the answer if the question is invalid
+      setError(`Please ask questions related to depression,stress,anxiety`);
+      setAnswer(''); 
       return;
     }
 
-    setError(''); // Clear error message
+    setError(''); 
     setAnswer("loading..");
     try {
       const response = await axios({
@@ -31,7 +31,7 @@ const AIComponent = () => {
         method: "post",
         data: {
           contents: [{ parts: [{ text: question }] }],
-        },
+        }
       });
 
       setAnswer(response["data"]["candidates"][0]["content"]["parts"][0]["text"]);
@@ -41,13 +41,13 @@ const AIComponent = () => {
     }
   };
 
-  // Input change handler for the question
+  
   const handleInputChange = (e) => {
     setQuestion(e.target.value);
-    setError(''); // Clear error when user starts typing a new question
+    setError(''); 
   };
 
-  // UI rendering
+ 
   return (
     <div className="aicomponent-container">
       <h2>Ask Your Question</h2>

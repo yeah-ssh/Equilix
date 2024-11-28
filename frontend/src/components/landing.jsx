@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import './../css/landing.css'; // Ensure correct path to your CSS file
+import './../css/landing.css'; 
 
 const Landing = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
+  useEffect(() => {
+    
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/main'); 
+    }
+  }, [navigate]);
+
+ 
 
    const handleLogin = () => {
      navigate('/login');
