@@ -1,201 +1,235 @@
-/* General Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.login {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(380px, 1fr);
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
-body, html {
+/* Bubble field */
+.login-field {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(80% 50% at 50% 108%, rgba(99, 226, 188, 0.28), transparent 70%),
+    radial-gradient(60% 40% at 20% 0%, rgba(159, 184, 255, 0.12), transparent 70%),
+    linear-gradient(180deg, #1a3157 0%, var(--dusk) 45%, #10233f 100%);
+}
+
+.login-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  font-family: 'Arial', sans-serif;
+  touch-action: manipulation;
 }
 
-.login-container {
-  display: flex;
-  height: 100vh;
-}
-
-.left-section {
-  flex: 1;
-  background: linear-gradient(135deg, 
-              rgba(21,255,160), 
-              rgb(3, 240, 137), 
-              rgb(92, 228, 217), 
-              rgb(65, 235, 108), 
-              rgb(8, 207, 104));
-  background-size: 300% 300%;
-  animation: complexGradientFlow 10s ease infinite;
-  color: #F1F1F1;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  overflow: hidden; /* To prevent bubbles from overflowing outside */
-}
-
-.product-title {
-  font-size: 5rem;
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  margin-bottom: 20px;
-  color: #ffffff;
-  animation: fadeIn 1s ease-in-out;
-}
-
-.welcome-text {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 40px;
-  animation: fadeIn 3s ease-in-out;
-  color:#f5f1f1
-}
-
-.animation-area {
-  width: 100%;
-  height: 100%; /* Make sure bubbles cover the entire left section */
+.login-field-top,
+.login-field-copy {
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1; /* Ensure bubbles float over the content */
-  overflow: hidden; /* Hide overflow of floating bubbles */
+  left: var(--gutter);
+  right: var(--gutter);
+  pointer-events: none;
 }
 
-/* Bubbles */
-.bubble {
+.login-field-top {
+  top: 24px;
+}
+
+.login-field-top .brand {
+  pointer-events: auto;
+}
+
+.login-field-copy {
+  bottom: 0;
+  padding: 72px 0 40px;
+}
+
+/* Soft shade so the line stays readable as bubbles pass behind it */
+.login-field-copy::before {
+  content: '';
   position: absolute;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.3) 60%, rgba(255, 255, 255, 0.05) 100%);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 
-              inset -3px -3px 8px rgba(0, 0, 0, 0.1), 
-              inset 3px 3px 8px rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  animation: float 15s infinite ease-in-out;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  inset: 0 calc(-1 * var(--gutter));
+  z-index: -1;
+  background: linear-gradient(0deg, rgba(13, 27, 46, 0.7) 0%, rgba(13, 27, 46, 0.35) 55%, transparent 100%);
 }
 
-.bubble:hover {
-  background-color: rgba(255, 255, 255, 0.425); /* Brighter on hover */
-  transform: scale(1.2); /* Slightly increase size on hover */
-  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2), 
-              inset -5px -5px 10px rgba(0, 0, 0, 0.2), 
-              inset 5px 5px 12px rgba(255, 255, 255, 0.7);
+.login-calm {
+  max-width: 22ch;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: 1.15;
+  text-shadow: 0 2px 24px rgba(13, 27, 46, 0.6);
+  animation: calm-in 600ms var(--ease-out) both;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-500px);
-  }
-  100% {
-    transform: translateY(0);
+@keyframes calm-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
 }
 
-/* Advanced Gradient Animation */
-@keyframes complexGradientFlow {
-  0% {
-    background-position: 0% 50%;
-  }
-  25% {
-    background-position: 50% 0%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  75% {
-    background-position: 50% 100%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.login-count {
+  min-height: 1.6em;
+  margin-top: 0.75rem;
+  color: var(--mist);
+  font-size: var(--text-sm);
 }
 
-.right-section {
-  flex: 2;
-  background-color: #ffffff;
+.login-count-number {
+  color: var(--seaglass);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Form panel */
+.login-panel.horizon::after {
+  opacity: 0.6;
+}
+
+.login-panel {
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 50px;
-  position: relative;
-  z-index: 2; /* Ensure the form appears on top */
+  justify-content: center;
+  padding: 48px var(--gutter);
+  background: var(--night);
 }
 
-.form-container {
+.login-form-wrap {
   width: 100%;
   max-width: 400px;
-  text-align: center;
 }
 
-input {
+.login-title {
+  font-size: var(--text-2xl);
+}
+
+.login-subtitle {
+  margin-top: 0.5rem;
+  color: var(--mist);
+}
+
+.login-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 2rem;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--dusk);
+}
+
+.login-switch button {
+  min-height: 40px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--mist);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.login-switch button.is-active {
+  background: var(--tide-strong);
+  color: var(--cloud);
+}
+
+.login-form {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field-label {
+  color: var(--mist);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.field-hint {
+  color: var(--haze);
+  font-size: var(--text-xs);
+}
+
+.field input {
   width: 100%;
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 2px solid #04c59d;
-  border-radius: 4px;
+  min-height: 50px;
+  padding: 0 16px;
+  border: 1px solid var(--tide-strong);
+  border-radius: var(--radius-sm);
+  background: var(--dusk);
+  color: var(--cloud);
+  transition: border-color 160ms ease, background-color 160ms ease;
 }
 
-.auth-btn {
+.field input:hover {
+  border-color: #3d5d91;
+}
+
+.field input:focus {
+  border-color: var(--seaglass);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 226, 188, 0.2);
+}
+
+.field-control {
+  position: relative;
+  display: block;
+}
+
+.field-control input {
+  padding-right: 52px;
+}
+
+.field-reveal {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--haze);
+}
+
+.field-reveal:hover {
+  color: var(--cloud);
+}
+
+.login-submit {
   width: 100%;
-  padding: 15px;
-  background-color: #04c59d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  margin-top: 4px;
 }
 
-.auth-btn:hover {
-  background-color: #1deb46a4;
+.login-privacy {
+  margin-top: 28px;
 }
 
-.toggle-mode {
-  margin-top: 10px;
-  font-size: 0.9rem;
-}
+@media (max-width: 860px) {
+  .login {
+    grid-template-columns: 1fr;
+    grid-template-rows: 42svh auto;
+  }
 
-.toggle-mode span {
-  color: #007bff;
-  cursor: pointer;
-}
+  .login-field-copy {
+    bottom: 20px;
+  }
 
-.toggle-mode span:hover {
-  text-decoration: underline;
-}
+  .login-calm {
+    font-size: var(--text-xl);
+  }
 
-.tile {
-  background-color: rgba(255, 255, 255, 0.1); /* More transparent background for glass effect */
-  backdrop-filter: blur(15px); /* Stronger blur effect */
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Light shadow for depth */
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Thin border to enhance glass effect */
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Added background-color transition */
-}
-
-.tile:hover {
-  transform: translateY(-5px); /* Slight hover effect */
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
-  background-color: rgba(255, 255, 255, 0.2); /* Slightly change background color on hover for a dynamic effect */
-}
-
-.auth-header {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.header-line {
-  border: none; /* Removes default border styles */
-  height: 2px; /* Line thickness */
-  background-color: #ccc; /* Line color */
-  margin: 20px; /* Spacing around the line */
+  .login-panel {
+    align-items: flex-start;
+    padding-top: 36px;
+  }
 }

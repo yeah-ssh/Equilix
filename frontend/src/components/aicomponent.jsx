@@ -1,76 +1,160 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import "../css/aicomponent.css";
+import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
+import { BrandMark } from './brand';
+import RichText from './richtext';
+import { API_URL } from '../config';
+import '../css/aicomponent.css';
 
-const AIComponent = () => {
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
+const suggestions = [
+  'I can’t stop overthinking at night',
+  'How do I deal with exam stress?',
+  'My friend seems down. How can I help?',
+  'What does anxiety feel like in the body?',
+];
+
+const Chat = () => {
+  const [messages, setMessages] = useState([]);
+  const [draft, setDraft] = useState('');
+  const [isThinking, setIsThinking] = useState(false);
   const [error, setError] = useState('');
+  const threadEndRef = useRef(null);
+  const inputRef = useRef(null);
 
-  
-  const allowedKeywords = ['depression', 'stress', 'anxiety', 'mental health', 'well-being','depressed','stressed','low','health','mind','suicide','exercise',];
+  useEffect(() => {
+    if (messages.length === 0) return;
+    threadEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [messages, isThinking]);
 
-  
-  const generateAnswer = async () => {
-    
-    const isValidQuestion = allowedKeywords.some(keyword => 
-      question.toLowerCase().includes(keyword)
-    );
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    input.style.height = 'auto';
+    input.style.height = `${Math.min(input.scrollHeight, 180)}px`;
+  }, [draft]);
 
-    if (!isValidQuestion) {
-      setError(`Please ask questions related to depression,stress,anxiety`);
-      setAnswer(''); 
-      return;
-    }
-
-    setError(''); 
-    setAnswer("loading..");
+  const send = async (history) => {
+    setIsThinking(true);
+    setError('');
     try {
-      const response = await axios({
-        url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyALZBwgtDCTEroLm53oa2lyG4h2j0fDBes",
-        method: "post",
-        data: {
-          contents: [{ parts: [{ text: question }] }],
-        }
-      });
-
-      setAnswer(response["data"]["candidates"][0]["content"]["parts"][0]["text"]);
-    } catch (error) {
-      setAnswer("Error fetching the answer. Please try again later.");
-      console.error("Error fetching the response:", error);
+      const response = await axios.post(`${API_URL}/api/chat`, { messages: history });
+      setMessages([...history, { role: 'assistant', content: response.data.answer }]);
+    } catch (err) {
+      setError('The assistant didn’t answer. Check your connection and try again.');
+    } finally {
+      setIsThinking(false);
     }
   };
 
-  
-  const handleInputChange = (e) => {
-    setQuestion(e.target.value);
-    setError(''); 
+  const ask = (text) => {
+    const question = text.trim();
+    if (!question || isThinking) return;
+    const history = [...messages, { role: 'user', content: question }];
+    setMessages(history);
+    setDraft('');
+    send(history);
   };
 
- 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    ask(draft);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      ask(draft);
+    }
+  };
+
+  const startNew = () => {
+    setMessages([]);
+    setError('');
+    inputRef.current?.focus();
+  };
+
   return (
-    <div className="aicomponent-container">
-      <h2>Ask Your Question</h2>
-      <div className="input-container">
-        <textarea
-          value={question}
-          onChange={handleInputChange}
-          placeholder="Ask a question related to depression, stress, anxiety..."
-        />
-        <button onClick={generateAnswer} disabled={!question}>
-          {answer === 'loading..' ? 'Loading...' : 'Send'}
-        </button>
-      </div>
-      {error && <div className="error-message">{error}</div>}
-      <div className="response-container">
-        {answer === 'loading..' ? (
-          <div className="loading-text">Loading...</div>
+    <div className="chat">
+      <div className="chat-thread" aria-live="polite">
+        {messages.length === 0 ? (
+          <div className="chat-empty">
+            <h2>What’s on your mind?</h2>
+            <p>
+              Ask about stress, anxiety, low mood, sleep, friends or school. There are no wrong
+              questions here.
+            </p>
+            <div className="chat-suggestions">
+              {suggestions.map((s) => (
+                <button type="button" key={s} className="chat-suggestion" onClick={() => ask(s)}>
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
         ) : (
-          <div className="response-text">{answer}</div>
+          messages.map((m, i) =>
+            m.role === 'user' ? (
+              <div className="chat-msg chat-msg-user" key={i}>
+                <p>{m.content}</p>
+              </div>
+            ) : (
+              <div className="chat-msg chat-msg-assistant" key={i}>
+                <BrandMark className="chat-avatar" />
+                <RichText text={m.content} />
+              </div>
+            )
+          )
+        )}
+
+        {isThinking && (
+          <div className="chat-msg chat-msg-assistant">
+            <BrandMark className="chat-avatar" />
+            <span className="chat-typing" aria-label="The assistant is writing">
+              <i /> <i /> <i />
+            </span>
+          </div>
+        )}
+
+        {error && (
+          <div className="chat-error">
+            <p className="form-error" role="alert">{error}</p>
+            <button type="button" className="btn btn-text" onClick={() => send(messages)}>
+              Try again
+            </button>
+          </div>
+        )}
+        <div ref={threadEndRef} className="chat-thread-end" />
+      </div>
+
+      <form className="chat-composer" onSubmit={handleSubmit}>
+        <label htmlFor="chat-input" className="visually-hidden">Your message</label>
+        <textarea
+          id="chat-input"
+          ref={inputRef}
+          rows={1}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Write a message"
+        />
+        <button type="submit" className="chat-send" disabled={!draft.trim() || isThinking} aria-label="Send message">
+          <ArrowUpwardRoundedIcon />
+        </button>
+      </form>
+      <div className="chat-foot">
+        <p className="support-note">
+          This assistant is AI and can get things wrong. It isn’t a replacement for a professional.
+          In a crisis, call or text 988 (US) or visit{' '}
+          <a href="https://findahelpline.com" target="_blank" rel="noreferrer">findahelpline.com</a>.
+        </p>
+        {messages.length > 0 && (
+          <button type="button" className="btn btn-text" onClick={startNew}>
+            New conversation
+          </button>
         )}
       </div>
     </div>
   );
 };
 
-export default AIComponent;
+export default Chat;

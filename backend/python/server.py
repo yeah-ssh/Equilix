@@ -26,17 +26,18 @@ def predict():
     anxiety_responses = data['anxiety']
 
     # Create a DataFrame for each model to ensure valid feature names
-    depression_df = pd.DataFrame([depression_responses])
-    stress_df = pd.DataFrame([stress_responses])
-    anxiety_df = pd.DataFrame([anxiety_responses])
+    depression_df = pd.DataFrame([depression_responses], columns=depression_model.feature_names_in_)
+    stress_df = pd.DataFrame([stress_responses], columns=stress_model.feature_names_in_)
+    anxiety_df = pd.DataFrame([anxiety_responses], columns=anxiety_model.feature_names_in_)
     
     # Make predictions for each model
     depression_pred = depression_model.predict(depression_df)[0]
     stress_pred = stress_model.predict(stress_df)[0]
     anxiety_pred = anxiety_model.predict(anxiety_df)[0]
     
-    # Map predictions to readable labels (update based on your classification labels)
-    labels = ['Extremely Severe', 'Severe', 'Moderate', 'Mild', 'Normal']
+    # LabelEncoder sorted the labels alphabetically during training (main.py),
+    # so the model's class indices follow that order.
+    labels = ['Extremely Severe', 'Mild', 'Moderate', 'Normal', 'Severe']
     
     return jsonify({
         'depression': labels[depression_pred],
@@ -45,4 +46,4 @@ def predict():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

@@ -1,0 +1,447 @@
+/* Shared page shell for Games and Talk */
+.standalone {
+  min-height: 100vh;
+}
+
+.standalone-main {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 24px var(--gutter) 64px;
+}
+
+.standalone-title {
+  font-size: var(--text-3xl);
+}
+
+.standalone-intro {
+  max-width: 34rem;
+  margin-top: 0.75rem;
+  margin-bottom: 36px;
+  color: var(--mist);
+  font-size: var(--text-lg);
+}
+
+/* Game picker */
+.games-picker {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.games-pick {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--tide);
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--cloud);
+  text-align: left;
+  transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+.games-pick:hover {
+  border-color: var(--tide-strong);
+  background: rgba(22, 41, 74, 0.6);
+}
+
+.games-pick.is-active {
+  border-color: var(--seaglass);
+  background: var(--dusk);
+}
+
+.games-pick-name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+}
+
+.games-pick-about {
+  color: var(--mist);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+.games-stage {
+  margin-top: 28px;
+  animation: page-enter 300ms var(--ease-out) both;
+}
+
+/* Shared game chrome */
+.game {
+  max-width: 34rem;
+}
+
+.game-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  margin-bottom: 20px;
+}
+
+.game-stats {
+  display: flex;
+  gap: 28px;
+  margin: 0;
+}
+
+.game-stats dt {
+  color: var(--haze);
+  font-size: var(--text-xs);
+}
+
+.game-stats dd {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.game-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  animation: page-enter 300ms var(--ease-out) both;
+}
+
+.game-result-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+}
+
+.game-hint {
+  margin-top: 16px;
+  color: var(--haze);
+  font-size: var(--text-xs);
+}
+
+/* Memory cards */
+.memory-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  perspective: 900px;
+}
+
+.memory-card {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  transform-style: preserve-3d;
+  transition: transform 420ms var(--ease-out);
+}
+
+.memory-card.is-up {
+  transform: rotateY(180deg);
+}
+
+.memory-card:disabled {
+  cursor: default;
+}
+
+.memory-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  backface-visibility: hidden;
+}
+
+.memory-back {
+  border: 1px solid var(--tide-strong);
+  background: var(--dusk);
+}
+
+.memory-mark {
+  width: 38%;
+  height: 38%;
+  opacity: 0.55;
+}
+
+.memory-card:hover:not(.is-up) .memory-back {
+  border-color: #4a6ca3;
+}
+
+.memory-front {
+  transform: rotateY(180deg);
+  border: 1px solid var(--tide-strong);
+  background: var(--tide);
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+}
+
+.memory-card.is-matched .memory-front {
+  border-color: rgba(99, 226, 188, 0.6);
+  background: rgba(99, 226, 188, 0.14);
+}
+
+/* Whack-a-mole */
+.whack-time {
+  height: 4px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  background: var(--tide);
+  overflow: hidden;
+}
+
+.whack-time span {
+  display: block;
+  height: 100%;
+  background: var(--firstlight);
+  transform-origin: left;
+  transition: transform 1s linear;
+}
+
+.whack-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.whack-hole {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--dusk);
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.whack-hole:disabled {
+  cursor: default;
+}
+
+.whack-grid.is-live .whack-hole {
+  cursor: crosshair;
+}
+
+/* The burrow clips the mole so it is hidden until it pops up */
+.whack-burrow {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 24%;
+  height: 62%;
+  overflow: hidden;
+}
+
+.whack-dirt {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 14%;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 35%, #050c18 45%, #0a1628 100%);
+  box-shadow: 0 -2px 0 rgba(238, 243, 250, 0.05);
+}
+
+.whack-mole {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -8%;
+  height: 92%;
+  border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+  background: linear-gradient(180deg, #b48d6b 0%, #8a6648 100%);
+  transform: translateY(105%);
+  transition: transform 160ms var(--ease-out);
+}
+
+.whack-hole.is-up .whack-mole {
+  transform: translateY(0);
+}
+
+.whack-hole.is-hit .whack-mole {
+  transform: translateY(30%) scaleY(0.85);
+  transition-duration: 90ms;
+}
+
+.whack-eyes {
+  position: absolute;
+  inset: 0;
+}
+
+.whack-eyes::before,
+.whack-eyes::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  width: 11%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--night);
+}
+
+.whack-eyes::before {
+  left: 28%;
+}
+
+.whack-eyes::after {
+  right: 28%;
+}
+
+.whack-nose {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  width: 20%;
+  height: 13%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #ffb8d2;
+}
+
+.whack-plus {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  color: var(--firstlight);
+  font-weight: 700;
+  animation: plus-up 260ms ease-out both;
+}
+
+@keyframes plus-up {
+  from {
+    opacity: 1;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* Maze */
+.maze-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 20px;
+}
+
+.maze-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--maze-size), 1fr);
+  aspect-ratio: 1;
+  max-width: 30rem;
+  padding: 6px;
+  border-radius: var(--radius-md);
+  background: var(--dusk);
+}
+
+.maze-board:focus-visible {
+  outline-offset: 4px;
+}
+
+.maze-cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+}
+
+.maze-cell.is-wall {
+  background: var(--tide-strong);
+  border-radius: 3px;
+}
+
+.maze-cell.is-trail {
+  background: radial-gradient(circle, rgba(99, 226, 188, 0.5) 0 22%, transparent 26%);
+}
+
+.maze-token {
+  font-size: clamp(0.85rem, 3.4vw, 1.35rem);
+  line-height: 1;
+}
+
+.maze-won {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  border-radius: var(--radius-md);
+  background: rgba(13, 27, 46, 0.86);
+  text-align: center;
+  animation: page-enter 300ms var(--ease-out) both;
+}
+
+.maze-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 48px);
+  grid-template-rows: repeat(3, 48px);
+  gap: 4px;
+}
+
+.maze-pad button {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--tide-strong);
+  border-radius: var(--radius-sm);
+  background: var(--dusk);
+  color: var(--cloud);
+  touch-action: manipulation;
+}
+
+.maze-pad button:active {
+  background: var(--tide);
+}
+
+.maze-pad-up {
+  grid-area: 1 / 2;
+}
+
+.maze-pad-left {
+  grid-area: 2 / 1;
+}
+
+.maze-pad-right {
+  grid-area: 2 / 3;
+}
+
+.maze-pad-down {
+  grid-area: 3 / 2;
+}
+
+@media (max-width: 760px) {
+  .games-picker {
+    gap: 6px;
+  }
+
+  .games-pick {
+    place-items: center;
+    padding: 12px 6px;
+    text-align: center;
+  }
+
+  .games-pick-name {
+    font-size: var(--text-sm);
+  }
+
+  .games-pick-about {
+    display: none;
+  }
+
+  .maze-wrap {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 761px) {
+  .maze-pad {
+    opacity: 0.7;
+  }
+}
