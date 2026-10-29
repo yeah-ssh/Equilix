@@ -1,20 +1,26 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os
 import pickle
 import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
 
-# Load models
-with open('svm_model.pkl', 'rb') as file:
+# Load models from this file's folder so the working directory doesn't matter
+MODEL_DIR = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(MODEL_DIR, 'svm_model.pkl'), 'rb') as file:
     depression_model = pickle.load(file)
 
-with open('svm_model_st.pkl', 'rb') as file:
+with open(os.path.join(MODEL_DIR, 'svm_model_st.pkl'), 'rb') as file:
     stress_model = pickle.load(file)
 
-with open('svm_model_ax.pkl', 'rb') as file:
+with open(os.path.join(MODEL_DIR, 'svm_model_ax.pkl'), 'rb') as file:
     anxiety_model = pickle.load(file)
+
+@app.route('/health')
+def health():
+    return jsonify({'ok': True})
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -46,4 +52,4 @@ def predict():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
