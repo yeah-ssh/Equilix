@@ -1,0 +1,57 @@
+# Render Blueprint: three free services.
+# Values marked "sync: false" are secrets or URLs you enter in the Render dashboard.
+services:
+  # Flask API that scores check-ins with the saved SVM models
+  - type: web
+    name: equilix-ml
+    runtime: python
+    plan: free
+    rootDir: backend/python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app --bind 0.0.0.0:$PORT --workers 1 --timeout 60
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+
+  # Node API: accounts (MongoDB) and AI chat (Groq)
+  - type: web
+    name: equilix-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: MONGO_URI
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-120b
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        sync: false # the frontend's URL, e.g. https://equilix-web.onrender.com
+
+  # React frontend
+  - type: web
+    name: equilix-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: build
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: REACT_APP_API_URL
+        sync: false # the equilix-api URL
+      - key: REACT_APP_ML_URL
+        sync: false # the equilix-ml URL

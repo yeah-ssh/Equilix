@@ -6,7 +6,9 @@ const mongoose = require("mongoose");
 const routes = require("./Routes/route.js");
 const cors = require('cors');
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+// Comma-separated list of sites allowed to call the API
+const CORS_ORIGINS = (process.env.CORS_ORIGIN || "http://localhost:3000").split(",").map((o) => o.trim());
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -18,7 +20,7 @@ mongoose.connection.once("open", () => {
 
 app.use(
   cors({
-    origin: "http://localhost:3000", 
+    origin: CORS_ORIGINS,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }));
@@ -35,9 +37,12 @@ app.use(express.urlencoded({ extended: true }));
 // );
 
 // Routes
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true, db: mongoose.connection.readyState === 1 });
+});
 app.use("/api", routes);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

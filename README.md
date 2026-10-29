@@ -29,7 +29,7 @@ It has three parts:
 cd server
 cp .env.example .env   # then fill in the values
 npm install
-npm start
+npm run dev
 ```
 
 `.env` needs:
@@ -38,6 +38,7 @@ npm start
 - `GROQ_API_KEY`: a key from console.groq.com
 - `GROQ_MODEL`: optional, defaults to `openai/gpt-oss-120b`
 - `JWT_SECRET`: any long random string
+- `CORS_ORIGIN`: optional, sites allowed to call the API (comma-separated), defaults to `http://localhost:3000`
 
 ### 2. Python scoring API
 
