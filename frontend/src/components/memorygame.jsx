@@ -1,71 +1,114 @@
-import React, { useState, useEffect } from 'react';
-import '../css/memorygame.css';
+import React, { useEffect, useRef, useState } from 'react';
+import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
+import { BrandMark } from './brand';
+
+const items = ['🍎', '🍌', '🍇', '🍒', '🍍', '🥝', '🍉', '🍑'];
+const BEST_KEY = 'equilix:memoryBest';
+
+const shuffle = (array) => {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
+
+const readBest = () => {
+  try {
+    return Number(localStorage.getItem(BEST_KEY)) || null;
+  } catch (e) {
+    return null;
+  }
+};
 
 const MemoryGame = () => {
-  
-  const items = ['🍎', '🍌', '🍇', '🍒', '🍍', '🥝', '🍉', '🍑'];
-  const [cards, setCards] = useState([]);
-  const [flippedCards, setFlippedCards] = useState([]);
-  const [matchedCards, setMatchedCards] = useState([]);
-  const [isGameComplete, setIsGameComplete] = useState(false);
+  const [cards, setCards] = useState(() => shuffle([...items, ...items]));
+  const [flipped, setFlipped] = useState([]);
+  const [matched, setMatched] = useState([]);
+  const [moves, setMoves] = useState(0);
+  const [best, setBest] = useState(readBest);
+  const lockTimer = useRef(null);
+
+  const isComplete = matched.length === cards.length;
+
+  useEffect(() => () => clearTimeout(lockTimer.current), []);
 
   useEffect(() => {
-    
-    setCards(shuffle([...items, ...items]));
-  }, []);
-
-  useEffect(() => {
-    
-    if (matchedCards.length === cards.length && cards.length > 0) {
-      setTimeout(() => setIsGameComplete(true), 500);
+    if (!isComplete || moves === 0) return;
+    if (!best || moves < best) {
+      setBest(moves);
+      try {
+        localStorage.setItem(BEST_KEY, String(moves));
+      } catch (e) {
+        // Best score is a nicety; ignore storage failures.
+      }
     }
-  }, [matchedCards, cards]);
-
-  
-  const shuffle = (array) => {
-    return array.sort(() => Math.random() - 0.5);
-  };
+  }, [isComplete]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCardClick = (index) => {
-    
-    if (
-      flippedCards.length === 2 ||
-      matchedCards.includes(index) ||
-      flippedCards.includes(index)
-    ) return;
+    if (flipped.length === 2 || matched.includes(index) || flipped.includes(index)) return;
 
-    setFlippedCards((prev) => [...prev, index]);
+    const next = [...flipped, index];
+    setFlipped(next);
 
-    if (flippedCards.length === 1) {
-      const firstCard = cards[flippedCards[0]];
-      const secondCard = cards[index];
-      if (firstCard === secondCard) {
-        setMatchedCards((prev) => [...prev, flippedCards[0], index]);
+    if (next.length === 2) {
+      setMoves((m) => m + 1);
+      if (cards[next[0]] === cards[next[1]]) {
+        setMatched((prev) => [...prev, ...next]);
+        setFlipped([]);
+      } else {
+        lockTimer.current = setTimeout(() => setFlipped([]), 900);
       }
-      setTimeout(() => setFlippedCards([]), 1000);
     }
+  };
+
+  const restart = () => {
+    clearTimeout(lockTimer.current);
+    setCards(shuffle([...items, ...items]));
+    setFlipped([]);
+    setMatched([]);
+    setMoves(0);
   };
 
   return (
-    <div className="memory-game-container">
-      <h2 className="memory-game-title">Memory Game</h2>
-      <div className="memory-game-board">
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className={`memory-card ${
-              flippedCards.includes(index) || matchedCards.includes(index) ? 'flipped' : ''
-            }`}
-            onClick={() => handleCardClick(index)}
-          >
-            <div className="card-front">?</div>
-            <div className="card-back">{card}</div>
-          </div>
-        ))}
+    <div className="game">
+      <div className="game-bar">
+        <dl className="game-stats">
+          <div><dt>Moves</dt><dd>{moves}</dd></div>
+          <div><dt>Pairs</dt><dd>{matched.length / 2} of {items.length}</dd></div>
+          {best && <div><dt>Best</dt><dd>{best} moves</dd></div>}
+        </dl>
+        <button type="button" className="btn btn-quiet" onClick={restart}>
+          <ReplayRoundedIcon /> Shuffle
+        </button>
       </div>
-      {isGameComplete && (
-        <div className="game-complete-message">
-          🎉 Congratulations! You've matched all pairs! 🎉
+
+      <div className="memory-board">
+        {cards.map((card, index) => {
+          const isUp = flipped.includes(index) || matched.includes(index);
+          return (
+            <button
+              type="button"
+              key={index}
+              className={`memory-card${isUp ? ' is-up' : ''}${matched.includes(index) ? ' is-matched' : ''}`}
+              onClick={() => handleCardClick(index)}
+              aria-label={isUp ? card : `Card ${index + 1}, face down`}
+              disabled={matched.includes(index)}
+            >
+              <span className="memory-face memory-back" aria-hidden="true">
+                <BrandMark className="memory-mark" />
+              </span>
+              <span className="memory-face memory-front" aria-hidden="true">{card}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {isComplete && (
+        <div className="game-result" role="status">
+          <p className="game-result-title">All pairs found in {moves} moves.</p>
+          <button type="button" className="btn btn-primary" onClick={restart}>Play again</button>
         </div>
       )}
     </div>

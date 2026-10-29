@@ -1,0 +1,6 @@
+Flask==3.1.3
+flask-cors==6.0.5
+numpy==2.0.2
+pandas==3.1.0
+# The saved models were trained with this exact version; keep it pinned.
+scikit-learn==1.5.2

@@ -1,13 +1,343 @@
+/* Equilix design tokens and shared building blocks.
+   Concept: "first light" - a night-sky palette taken from the landing
+   illustration, with a low dawn glow and the original sea-glass green for actions. */
+
+:root {
+  --night: #0d1b2e;
+  --dusk: #16294a;
+  --tide: #22385e;
+  --tide-strong: #2e4a78;
+  --cloud: #eef3fa;
+  --mist: #b8c7dd;
+  --haze: #8497b3;
+  --seaglass: #63e2bc;
+  --seaglass-strong: #8aecce;
+  --firstlight: #f4dfa2;
+  --alert: #ff9d8a;
+
+  /* Ordinal severity ramp: one amber hue, dim to bright (Normal -> Extremely severe) */
+  --sev-0: #8d6f44;
+  --sev-1: #b58545;
+  --sev-2: #df9b44;
+  --sev-3: #ffb755;
+  --sev-4: #ffdc84;
+
+  --font-display: 'Young Serif', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Type scale (perfect fourth, 17px body) */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.3125rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.3125rem;
+  --text-3xl: clamp(2.5rem, 5vw + 1rem, 4.125rem);
+  --text-hero: clamp(3.25rem, 8vw + 1rem, 7rem);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  min-height: 100vh;
+  background: var(--night);
+  color: var(--cloud);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--seaglass);
+  text-underline-offset: 0.2em;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--firstlight);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--seaglass);
+  color: var(--night);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* The dawn glow that sits low on every screen */
+.horizon {
+  position: relative;
+  isolation: isolate;
+}
+
+.horizon::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 70vh;
+  max-height: 720px;
+  background:
+    radial-gradient(42% 46% at 50% 100%, rgba(255, 196, 120, 0.16), transparent 70%),
+    radial-gradient(85% 70% at 50% 100%, rgba(120, 110, 220, 0.14), transparent 75%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 0 1.5em;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.btn svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.btn-primary {
+  background: var(--seaglass);
+  color: var(--night);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--seaglass-strong);
+}
+
+.btn-quiet {
+  background: rgba(238, 243, 250, 0.06);
+  border-color: rgba(238, 243, 250, 0.18);
+  color: var(--cloud);
+}
+
+.btn-quiet:hover:not(:disabled) {
+  background: rgba(238, 243, 250, 0.12);
+  border-color: rgba(238, 243, 250, 0.32);
+}
+
+.btn-text {
+  min-height: 40px;
+  padding: 0 0.75em;
+  background: none;
+  color: var(--mist);
+  font-weight: 500;
+}
+
+.btn-text:hover {
+  color: var(--cloud);
+}
+
+.app-header .btn-text {
+  font-size: var(--text-sm);
+}
+
+/* Brand */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--cloud);
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 1.6em;
+  height: 1.6em;
+  flex: none;
+}
+
+/* App header */
+.app-header {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 20px var(--gutter);
+}
+
+.app-header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.app-header-email {
+  color: var(--mist);
+  font-size: var(--text-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.app-nav a {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-pill);
+  color: var(--mist);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.app-nav a:hover {
+  color: var(--cloud);
+}
+
+.app-nav a[aria-current='page'] {
+  background: rgba(238, 243, 250, 0.08);
+  color: var(--cloud);
+}
+
+@media (max-width: 760px) {
+  .app-header {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .app-header-email {
+    display: none;
+  }
+
+  .app-nav {
+    order: 3;
+    width: 100%;
+    margin: 0 -0.75rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .app-nav a {
+    flex: none;
+  }
+}
+
+/* Inline error message */
+.form-error {
+  padding: 12px 14px;
+  border-left: 3px solid var(--alert);
+  border-radius: 4px;
+  background: rgba(255, 157, 138, 0.1);
+  color: #ffd3ca;
+  font-size: var(--text-sm);
+}
+
+/* Support note: shown wherever results or heavy topics appear */
+.support-note {
+  color: var(--haze);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.support-note a {
+  color: var(--mist);
+}
+
+/* Page enter: one quiet fade per route change */
+.page-enter {
+  animation: page-enter 420ms var(--ease-out) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
 }

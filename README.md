@@ -1,50 +1,64 @@
-# EQUILIX
+# Equilix
 
-This project is a full-stack application built with **React (frontend)** and a **Python server (backend)**. Since it’s not deployed yet, you can run it locally to explore the available routes and features.  
+Equilix helps teens check in on how they're doing. It runs the DASS-21 questionnaire, scores
+depression, anxiety and stress with a trained model, explains the results in plain language, and
+offers calming games and an AI assistant to talk things through.
 
----
+It has three parts:
 
-## 🚀 Features & Routes  
+| Folder | What it is | Port |
+|---|---|---|
+| `frontend/` | React app | 3000 |
+| `server/` | Node + Express API: accounts (MongoDB) and the AI chat (Groq) | 3001 |
+| `backend/python/` | Flask API that scores check-ins with the saved SVM models | 5001 |
 
-After starting the project, you can navigate through the following routes in your browser:  
+## Pages
 
-- `/` → **Landing Page**  
-- `/login` → **Login Page**  
-- `/main` → **Main Dashboard**  
-- `/report` → **Report Page**  
-- `/games` → **Concentration Game**  
-- `/gpt` → **AI Component (uses external API keys)**  
-- `/maze` → **Maze Game**  
+- `/`: landing page
+- `/login`: sign in or create an account (with the bubble field)
+- `/main`: home and the check-in
+- `/report`: results, response times, games and chat
+- `/games`: memory cards, whack-a-mole, cat & mouse maze
+- `/gpt`: talk to the assistant
 
----
+## Running it locally
 
-## 🛠️ Getting Started  
+### 1. Node server
 
-### 1. Clone the Repository  
 ```bash
-git clone <your-repo-url>
-cd <your-project-folder>
-```
-2. Install Dependencies
-Frontend (React)
-```bash
-cd frontend   # or the folder where your React app lives
+cd server
+cp .env.example .env   # then fill in the values
 npm install
-```
-Backend (Python Server)
-Make sure you have Python 3.9+ installed.
-```bash
-cd backend    # or the folder where your Python server lives
-pip install -r requirements.txt
-```
-3. Start the Servers
-   
-Start the Python server in Backend folder.
-```bash
-python main.py   # or uvicorn main:app --reload (if FastAPI/Flask setup differs)
-
-```
-Start the React frontend
-```
 npm start
 ```
+
+`.env` needs:
+
+- `MONGO_URI`: a MongoDB connection string
+- `GROQ_API_KEY`: a key from console.groq.com
+- `GROQ_MODEL`: optional, defaults to `openai/gpt-oss-120b`
+- `JWT_SECRET`: any long random string
+
+### 2. Python scoring API
+
+Requires Python 3.9 or newer.
+
+```bash
+cd backend/python
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python server.py
+```
+
+It runs on port 5001, because macOS AirPlay Receiver uses port 5000.
+
+### 3. Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+To point the frontend at deployed APIs, set `REACT_APP_API_URL` and `REACT_APP_ML_URL` before
+building.
